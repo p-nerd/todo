@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <title>Todo - Tailwind</title>
+    </head>
+    <body>
+        <div class="mx-auto flex min-h-screen w-full flex-col items-center bg-[#f5f5f5]">
+            <h1 class="pt-10 text-center text-8xl text-red-500 text-opacity-60">todos</h1>
+            <main class="mt-8 w-full max-w-prose rounded-lg bg-white shadow-2xl">
+                <!-- Row One -->
+                <div class="flex h-16 flex-row text-2xl">
+                    <button class="flex w-12 items-center justify-center text-gray-400">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="m3 17 2 2 4-4" />
+                            <path d="m3 7 2 2 4-4" />
+                            <path d="M13 6h8" />
+                            <path d="M13 12h8" />
+                            <path d="M13 18h8" />
+                        </svg>
+                    </button>
+                    <input
+                        class="min-w-0 flex-1 p-2 placeholder-gray-300 focus:outline-red-500/50"
+                        placeholder="What needs to be done?"
+                    />
+                </div>
+                <!-- Row Two -->
+                <div class="border-t-2 border-gray-100 text-2xl">
+                    <div class="group flex flex-row items-center">
+                        <button
+                            class="flex w-12 flex-col items-center justify-center text-green-500"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <path d="m9 11 3 3L22 4" />
+                            </svg>
+                        </button>
+                        <label
+                            class="flex min-w-0 flex-1 items-center break-all p-2 text-gray-500 line-through"
+                        >
+                            Completed Task
+                        </label>
+                        <button class="w-12 text-red-700 opacity-0 group-hover:opacity-100">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="border-t-2 border-gray-100 text-2xl">
+                    <div class="group flex flex-row items-center">
+                        <button
+                            class="flex w-12 flex-col items-center justify-center text-gray-400"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-circle"
+                            >
+                                <circle cx="12" cy="12" r="10" />
+                            </svg>
+                        </button>
+                        <label class="flex min-w-0 flex-1 items-center break-all p-2 text-gray-800">
+                            Normal Task
+                        </label>
+                        <button class="w-12 text-red-700 opacity-0 group-hover:opacity-100">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="flex flex-row flex-wrap items-center border-t-2 border-gray-100 p-2 font-light sm:flex-nowrap"
+                >
+                    <div class="order-1 flex flex-1 flex-row justify-start">2 items left</div>
+                    <div class="order-2 flex flex-1 flex-row justify-end sm:order-3">
+                        <button class="font-light hover:underline">Clear Completed</button>
+                    </div>
+                    <div
+                        class="order-3 flex min-w-full flex-1 flex-row justify-center sm:order-2 sm:min-w-min"
+                    >
+                        <button class="mx-2 rounded border border-red-900 px-1">All</button>
+                        <button
+                            class="mx-2 rounded border border-transparent px-1 hover:border-red-100"
+                        >
+                            Active
+                        </button>
+                        <button
+                            class="mx-2 rounded border border-transparent px-1 hover:border-red-100"
+                        >
+                            Completed
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script type="module" src="/src/main.ts"></script>
+    </body>
+</html>
