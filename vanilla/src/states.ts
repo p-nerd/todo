@@ -6,7 +6,15 @@ const TODOS_KEY = "p-nerd-app-todos";
 
 export const todos = {
     set: (todos: TTodo[]) => localStorage.setItem(TODOS_KEY, JSON.stringify(todos)),
-    get: (): TTodo[] => JSON.parse(localStorage.getItem(TODOS_KEY) || ""),
+    get: (): TTodo[] => {
+        const todos = localStorage.getItem(TODOS_KEY);
+        if (!todos) {
+            return [];
+        }
+        const x = JSON.parse(todos);
+        console.log(x);
+        return x;
+    },
 };
 
 export const activeTab = {
