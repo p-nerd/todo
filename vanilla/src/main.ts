@@ -1,98 +1,108 @@
 import "./style.css";
+import type { TTab, TTodo } from "./types";
+import { generateId } from "./utils";
+import { activeTab, todos } from "./states";
+import { setupTodo, setupTabs } from "./setups";
 
-type TTodo = {
-    id: string;
-    content: string;
-    completed: boolean;
-};
-
-const todos: TTodo[] = [
-    {
-        id: "1",
-        content: "Completed Task",
-        completed: true,
-    },
-    {
-        id: "2",
-        content: "Normal Task",
-        completed: false,
-    },
-];
-
-const renderTodo = (todo: TTodo) => {
-    const contentConditionClass = todo.completed ? "text-gray-500 line-through" : "text-gray-800";
-    const completedConditionSvg = todo.completed
-        ? `<svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                <path d="m9 11 3 3L22 4" />
-            </svg>`
-        : `<svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-circle"
-            >
-                <circle cx="12" cy="12" r="10" />
-            </svg>`;
-
-    return `
-        <div class="border-t-2 border-gray-100 text-2xl">
-            <div class="group flex flex-row items-center">
-                <button
-                    class="flex w-12 flex-col items-center justify-center ${todo.completed ? "text-green-500" : ""}"
-                >
-                    ${completedConditionSvg} 
-                </button>
-                <label
-                    class="flex min-w-0 flex-1 items-center break-all p-2 ${contentConditionClass}"
-                >
-                   ${todo.content} 
-                </label>
-                <button class="w-12 text-red-700 opacity-0 group-hover:opacity-100">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="M18 6 6 18" />
-                        <path d="m6 6 12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    `;
-};
-
-const renderTodos = (todos: TTodo[]) => {
-    const root = document.getElementById("todos-root");
-    if (!root) {
-        return;
+const handleToogleAll = () => {
+    if (todos.get().reduce((x, todo) => x && todo.completed, true)) {
+        todos.set(
+            todos.get().map(todo => {
+                return { ...todo, completed: false };
+            }),
+        );
+    } else {
+        todos.set(
+            todos.get().map(todo => {
+                if (todo.completed) return todo;
+                return { ...todo, completed: true };
+            }),
+        );
     }
-    root.innerHTML = `
-        ${todos.reduce((s, todo) => s + renderTodo(todo), "")}
-`;
+    render();
 };
 
-renderTodos(todos);
+const handleSaveTodo = (content: string) => {
+    todos.set([...todos.get(), { id: generateId(), content, completed: false }]);
+    render();
+};
+
+const handleToogle = (id: string) => {
+    todos.set(
+        todos.get().map(todo => {
+            if (todo.id !== id) return todo;
+            return { ...todo, completed: !todo.completed };
+        }),
+    );
+    render();
+};
+
+const handleDelete = (id: string) => {
+    todos.set(todos.get().filter(todo => todo.id !== id));
+    render();
+};
+
+const handleTabClick = (tab: TTab) => {
+    if (tab === activeTab.get()) return;
+    activeTab.set(tab);
+    render();
+};
+
+const handleClearCompleted = () => {
+    todos.set(todos.get().filter(todo => !todo.completed));
+    render();
+};
+
+const filterTodos = (todos: TTodo[]) => {
+    return todos.filter(todo => {
+        const _activeTab = activeTab.get();
+        if (_activeTab === "Active") {
+            return !todo.completed;
+        }
+        if (_activeTab === "Completed") {
+            return todo.completed;
+        }
+        return true;
+    });
+};
+
+const renderHeader = () => {
+    const selectAll = document.getElementById("toggle-all-btn")!;
+    selectAll.onclick = handleToogleAll;
+
+    const todoInput = document.getElementById("todo-input")! as HTMLInputElement;
+    todoInput.onkeydown = (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+            handleSaveTodo(todoInput.value || "");
+            todoInput.value = "";
+        }
+    };
+};
+
+const renderTodos = () => {
+    const todosRoot = document.getElementById("todos-root")!;
+    todosRoot.innerHTML = "";
+    const _todos = filterTodos(todos.get());
+    _todos.forEach(todo => todosRoot.appendChild(setupTodo(todo, handleToogle, handleDelete)));
+};
+
+const renderFooter = () => {
+    const todoItemsLeft = document.getElementById("todo-items-left")!;
+    todoItemsLeft.innerText = `${todos.get().filter(todo => !todo.completed).length} items left`;
+
+    const tabsRoot = document.getElementById("tabs-root")!;
+    tabsRoot.innerHTML = "";
+    const tabs = setupTabs(activeTab.get(), handleTabClick);
+    tabs.forEach(tabElement => tabsRoot.appendChild(tabElement));
+
+    const clearCompleted = document.getElementById("clear-completed-btn")!;
+    clearCompleted.onclick = handleClearCompleted;
+};
+
+const render = () => {
+    renderHeader();
+    renderTodos();
+    renderFooter();
+};
+
+render();
