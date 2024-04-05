@@ -1,6 +1,13 @@
-const Toggle = () => {
+import { TTodo } from "../utils/types";
+
+const Toggle = (p: { todos: TTodo[]; onSelect: () => void; onUnselect: () => void }) => {
+    const isAllSelected =
+        p.todos.reduce((x, todo) => x && todo.completed, true) && p.todos.length > 0;
     return (
-        <button className="flex w-12 items-center justify-center text-gray-400">
+        <button
+            onClick={() => (isAllSelected ? p.onUnselect() : p.onSelect())}
+            className={`flex w-12 items-center justify-center text-gray-400 ${isAllSelected ? "text-green-500" : ""}`}
+        >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width={24}

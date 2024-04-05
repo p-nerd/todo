@@ -1,11 +1,16 @@
 import { TTodo } from "../utils/types";
 
-const Todo = (p: { todo: TTodo }) => {
+const Todo = (p: {
+    todo: TTodo;
+    onToggle: (id: string) => void;
+    onDelete: (id: string) => void;
+}) => {
     return (
         <div className="border-t-2 border-gray-100 text-2xl">
             <div className="group flex flex-row items-center">
                 <button
                     className={`flex w-12 flex-col items-center justify-center ${p.todo.completed ? "text-green-500" : "text-gray-400"}`}
+                    onClick={() => p.onToggle(p.todo.id)}
                 >
                     {p.todo.completed ? (
                         <svg
@@ -44,7 +49,10 @@ const Todo = (p: { todo: TTodo }) => {
                 >
                     {p.todo.content}
                 </label>
-                <button className="w-12 text-red-700 opacity-0 group-hover:opacity-100">
+                <button
+                    className="w-12 text-red-700 opacity-0 group-hover:opacity-100"
+                    onClick={() => p.onDelete(p.todo.id)}
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width={24}
