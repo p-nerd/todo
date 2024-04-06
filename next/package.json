@@ -3,7 +3,8 @@
         "dev": "next dev --turbo",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "studio": "drizzle-kit studio"
     },
     "dependencies": {
         "@libsql/client": "^0.6.0",
@@ -17,6 +18,7 @@
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "autoprefixer": "^10.0.1",
+        "dotenv": "^16.4.5",
         "drizzle-kit": "^0.20.14",
         "eslint": "^8",
         "eslint-config-next": "14.1.4",
